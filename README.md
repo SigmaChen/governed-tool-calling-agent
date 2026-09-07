@@ -40,6 +40,8 @@ direct executor access.
   mock.
 - A lookup for an order outside the trusted caller scope is policy-denied before
   the mock tool runs.
+- `draft_reply(order_id, message)` is allowed for an authorized order, while
+  `send_reply(order_id, message)` stops at `approval_required`.
 - `delete_customer(customer_id)` is structurally valid but policy-denied; its
   mock executor is never called.
 
@@ -50,6 +52,8 @@ python -m pip install -e .
 python -m unittest discover -s tests -v
 python -m governed_tool_agent.cli --scenario happy
 python -m governed_tool_agent.cli --scenario cross_customer
+python -m governed_tool_agent.cli --scenario draft
+python -m governed_tool_agent.cli --scenario send
 python -m governed_tool_agent.cli --scenario denied
 ```
 

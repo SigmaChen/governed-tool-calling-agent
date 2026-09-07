@@ -26,11 +26,23 @@ class LookupOrder:
 
 
 @dataclass(frozen=True)
+class DraftReply:
+    order_id: str
+    message: str
+
+
+@dataclass(frozen=True)
+class SendReply:
+    order_id: str
+    message: str
+
+
+@dataclass(frozen=True)
 class DeleteCustomer:
     customer_id: str
 
 
-TypedAction = LookupOrder | DeleteCustomer
+TypedAction = LookupOrder | DraftReply | SendReply | DeleteCustomer
 
 
 @dataclass(frozen=True)

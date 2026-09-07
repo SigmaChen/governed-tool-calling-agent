@@ -21,6 +21,16 @@ class DeterministicPlanner:
             return ProposedAction("lookup_order", {"order_id": "ORD-1001"})
         if self.scenario == "cross_customer":
             return ProposedAction("lookup_order", {"order_id": "ORD-2002"})
+        if self.scenario == "draft":
+            return ProposedAction(
+                "draft_reply",
+                {"order_id": "ORD-1001", "message": "Your order is processing."},
+            )
+        if self.scenario == "send":
+            return ProposedAction(
+                "send_reply",
+                {"order_id": "ORD-1001", "message": "Your order is processing."},
+            )
         if self.scenario == "denied":
             return ProposedAction("delete_customer", {"customer_id": "CUS-009"})
         raise ValueError(f"Unknown deterministic scenario: {self.scenario}")
