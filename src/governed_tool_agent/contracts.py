@@ -13,6 +13,14 @@ class ProposedAction:
 
 
 @dataclass(frozen=True)
+class RuntimeContext:
+    """Trusted runtime data; planners cannot grant themselves access with it."""
+
+    actor_role: str
+    allowed_order_ids: frozenset[str]
+
+
+@dataclass(frozen=True)
 class LookupOrder:
     order_id: str
 

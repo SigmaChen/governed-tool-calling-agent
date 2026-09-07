@@ -3,7 +3,7 @@
 from dataclasses import dataclass
 from enum import StrEnum
 
-from .contracts import ProposedAction, ToolResult
+from .contracts import ProposedAction, RuntimeContext, ToolResult
 from .policy import Decision, PolicyEngine
 from .tools import ToolRegistry, ValidationError, tool_name_for
 
@@ -28,13 +28,13 @@ class GovernedRuntime:
         self.registry = registry
         self.policy = policy
 
-    def run(self, proposed: ProposedAction) -> RunResult:
+    def run(self, proposed: ProposedAction, context: RuntimeContext) -> RunResult:
         try:
             action = self.registry.validate(proposed)
         except ValidationError as error:
             return RunResult(RunStatus.VALIDATION_ERROR, proposed.tool_name, str(error))
 
-        decision = self.policy.evaluate(action)
+        decision = self.policy.evaluate(action, context)
         if decision.decision is Decision.DENY:
             return RunResult(RunStatus.POLICY_DENIED, tool_name_for(action), decision.reason)
         if decision.decision is Decision.REQUIRE_APPROVAL:

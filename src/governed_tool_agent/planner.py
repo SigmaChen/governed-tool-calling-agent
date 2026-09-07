@@ -19,6 +19,8 @@ class DeterministicPlanner:
         del user_request  # A real adapter is intentionally out of scope.
         if self.scenario == "happy":
             return ProposedAction("lookup_order", {"order_id": "ORD-1001"})
+        if self.scenario == "cross_customer":
+            return ProposedAction("lookup_order", {"order_id": "ORD-2002"})
         if self.scenario == "denied":
             return ProposedAction("delete_customer", {"customer_id": "CUS-009"})
         raise ValueError(f"Unknown deterministic scenario: {self.scenario}")

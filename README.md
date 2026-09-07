@@ -10,8 +10,8 @@ executed, denied, or sent for approval.
 Tool registration is a useful static boundary: an agent cannot call a tool that
 is not exposed to it. It is not enough for tools that must be available but
 need different decisions for different invocations. For example, a support
-agent may use `issue_refund`, while a configured amount limit, the caller's
-role, and approval state determine whether this particular refund can proceed.
+agent may use `lookup_order`, while trusted caller scope and role determine
+whether this particular lookup can proceed.
 
 ```text
 Planner proposes a typed action
@@ -38,6 +38,8 @@ direct executor access.
 
 - `lookup_order(order_id)` is validated, allowed, and run against an in-memory
   mock.
+- A lookup for an order outside the trusted caller scope is policy-denied before
+  the mock tool runs.
 - `delete_customer(customer_id)` is structurally valid but policy-denied; its
   mock executor is never called.
 
@@ -47,6 +49,7 @@ direct executor access.
 python -m pip install -e .
 python -m unittest discover -s tests -v
 python -m governed_tool_agent.cli --scenario happy
+python -m governed_tool_agent.cli --scenario cross_customer
 python -m governed_tool_agent.cli --scenario denied
 ```
 
